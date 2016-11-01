@@ -1,133 +1,47 @@
 // server.js
 
-// BASE SETUP
-// =============================================================================
 
-// call the packages we need
-var express    = require('express');        // call express
-var app        = express();                 // define our app using express
-var bodyParser = require('body-parser');    // json
-var mongoose   = require('mongoose');       // database lib
-var Bear     = require('./models/bear');    // model setup
+// server.js
 
-// configure app to use bodyParser()
-// this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// set up ======================================================================
+// get all the tools we need
+var express  = require('express');
+var app      = express();
+var port     = process.env.PORT || 8080;
+var mongoose = require('mongoose');
+var passport = require('passport');
+var flash    = require('connect-flash');
 
-// connect to our database
+var configDB = require('./config/database.js');
 
-mongoose.connect('mongodb://pow:JesusPass1@jello.modulusmongo.net:27017/qiniM6im'); // connect to our database
+// configuration ===============================================================
+mongoose.connect(configDB.url); // connect to our database
 
-
+require('./config/passport')(passport); // pass passport for configuration
 
 
-var port = process.env.PORT || 8080;        // set our port
 
-// ROUTES FOR OUR API
-// =============================================================================
-var router = express.Router();              // get an instance of the express Router
+app.configure(function() {
 
-// middleware to use for all requests
-router.use(function(req, res, next) {
-    // do logging
-    console.log('Something is happening.');
-    next(); // make sure we go to the next routes and don't stop here
+	// set up our express application
+	app.use(express.logger('dev')); // log every request to the console
+	app.use(express.cookieParser()); // read cookies (needed for auth)
+	app.use(express.bodyParser()); // get information from html forms
+
+	app.set('view engine', 'ejs'); // set up ejs for templating
+
+	// required for passport
+	app.use(express.session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
+	app.use(passport.initialize());
+	app.use(passport.session()); // persistent login sessions
+	app.use(flash()); // use connect-flash for flash messages stored in session
+
 });
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
-});
+// routes ======================================================================
+require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-// more routes for our API will happen here
-
-// on routes that end in /bears
-// ----------------------------------------------------
-router.route('/bears')
-
-    // create a bear (accessed at POST http://localhost:8080/api/bears)
-    .post(function(req, res) {
-        
-        var bear = new Bear();      // create a new instance of the Bear model
-        bear.name = req.body.name;  // set the bears name (comes from the request)
-
-        // save the bear and check for errors
-        bear.save(function(err) {
-            if (err)
-                res.send(err);
-
-            res.json({ message: 'Bear created!' });
-        });
-        
-    })
-    // get all the bears (accessed at GET http://localhost:8080/api/bears)
-    // .get(function(req, res) {
-    //     Bear.find(function(err, bears) {
-    //         if (err)
-    //             res.send(err);
-
-    //         res.json(bears);
-    //     });
-    // })
-    // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
-    .get(function(req, res) {
-            Bear.find(function(err, bears) {
-                if (err)
-                    res.send(err);
-
-                res.json(bears);
-            });
-    });
-router.route('/bears/:bear_id')
-
-    // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
-    .get(function(req, res) {
-        Bear.findById(req.params.bear_id, function(err, bear) {
-            if (err)
-                res.send(err);
-            res.json(bear);
-        });
-    })
-     // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
-    .put(function(req, res) {
-
-        // use our bear model to find the bear we want
-        Bear.findById(req.params.bear_id, function(err, bear) {
-
-            if (err)
-                res.send(err);
-
-            bear.name = req.body.name;  // update the bears info
-
-            // save the bear
-            bear.save(function(err) {
-                if (err)
-                    res.send(err);
-
-                res.json({ message: 'Bear updated!' });
-            });
-
-        });
-    })
-    // delete the bear with this id (accessed at DELETE http://localhost:8080/api/bears/:bear_id)
-    .delete(function(req, res) {
-        Bear.remove({
-            _id: req.params.bear_id
-        }, function(err, bear) {
-            if (err)
-                res.send(err);
-
-            res.json({ message: 'Successfully deleted' });
-        });
-    });
-
-
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
-app.use('/api', router);
-
-// START THE SERVER
-// =============================================================================
+// launch ======================================================================
 app.listen(port);
-console.log('Magic happens on port ' + port);
+console.log('The magic happens on port ' + port);
+
