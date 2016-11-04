@@ -243,3 +243,76 @@ section.au-animate.ignoreMargin {
 }
 /* BS Color Settings End */
 /* Bootstrap overrides Start */
+
+
+/* Workout */
+
+/* Workout Cards Styles */
+.card-square.mdl-card {
+  width: 320px;
+  height: 320px;
+}
+.card-square > .mdl-card__title {
+  color: #fff;
+  background:
+    url('../assets/demos/dog.png') bottom right 15% no-repeat #46B6AC;
+}
+
+.card-image.mdl-card {
+  width: 256px;
+  height: 256px;
+  background: url('../assets/demos/image_card.jpg') center / cover;
+}
+.card-image > .mdl-card__actions {
+  height: 52px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+}
+.card-image__filename {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+.card-event.mdl-card {
+  width: 256px;
+  
+  background: #3E4EB8;
+}
+.card-event > .mdl-card__actions {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.card-event > .mdl-card__title {
+  align-items: flex-start;
+}
+.card-event > .mdl-card__title > h4 {
+  margin-top: 0;
+}
+.card-event > .mdl-card__actions {
+  display: flex;
+  box-sizing:border-box;
+  align-items: center;
+}
+.card-event > .mdl-card__actions > .material-icons {
+  padding-right: 10px;
+}
+.card-event > .mdl-card__title,
+.card-event > .mdl-card__actions,
+.card-event > .mdl-card__actions > .mdl-button {
+  color: #fff;
+}
+/* End of Workout card styles */
+.card-modal,
+.card-modal label
+.card-modal.mdl-textfield__error
+
+{
+  color: white;
+  background-color:#3E4EB8;
+}
+.card-modal span.mdl-textfield__error
+{
+    color: white;
+}
+
+/* Edit Data Cards Styles */
+/* End of Edit Data card styles */

@@ -1,0 +1,20 @@
+<template>
+  <!--<require from="material-design-lite/material.css"></require>-->
+  <!-- TODO add auto select and on blur close -->
+<ai-dialog class="card-modal">
+    <ai-dialog-body>
+      <h2>${data.title}</h2>
+      <form action="#">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" id="data-input" value.bind="data.input" focus.bind="hasFocus">
+        <label class="mdl-textfield__label" for="data-input">Text...</label>
+      </div>
+      </form>
+    </ai-dialog-body>
+
+    <ai-dialog-footer>
+      <button click.trigger="controller.cancel()">Cancel</button>
+      <button click.trigger="controller.ok(data.input)">Ok</button>
+    </ai-dialog-footer>
+  </ai-dialog>
+</template>
