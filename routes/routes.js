@@ -1,7 +1,7 @@
 // app/routes.js
 
 module.exports = function(app, passport) {
-
+console.log('wtf2');
 	// =====================================
 	// HOME PAGE (with login links) ========
 	// =====================================
@@ -77,7 +77,7 @@ module.exports = function(app, passport) {
 
 	
  require('./bearRoute.js')(app, isLoggedIn);
- require('./exerciseRoute.js')(app, isLoggedIn);
+ require('./workoutRoute.js')(app, isLoggedIn);
  
  // REGISTER OUR ROUTES -------------------------------
  // all of our routes will be prefixed with /api

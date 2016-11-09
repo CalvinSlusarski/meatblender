@@ -26,7 +26,6 @@ export class DemoWkOut{
     setTimeout( () => {
       item.details.splice(index, 1);
     },0);
-    //item.details.remove(detail);
   }
   changeExcercise = function(item){
     this.dialogService.open({ viewModel: EditData, model: {title: 'Exercise Name', input: item.lift}}).then(response => {

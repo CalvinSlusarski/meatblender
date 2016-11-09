@@ -7,20 +7,30 @@ module.exports = function(app, isLoggedIn) {
  	// ----------------------------------------------------
  	app.get('/api/bears', isLoggedIn,
  
-     // create a bear (accessed at POST http://localhost:8080/api/bears)
+     // get all bears (accessed at POST http://localhost:8080/api/bears)
      function(req, res) {
-         
-         var bear = new Bear();      // create a new instance of the Bear model
-         bear.name = req.body.name;  // set the bears name (comes from the request)
- 
-         // save the bear and check for errors
-         bear.save(function(err) {
+         Bear.find(function(err, bears) {
              if (err)
                  res.send(err);
- 
-             res.json({ message: 'Bear created!' });
+
+             res.json(bears);
          });
-         
+
+
+    });
+    app.post('/api/bears', isLoggedIn,
+        // create a bear (accessed at POST http://localhost:8080/api/bears)
+        function(req, res) {
+        var bear = new Bear();      // create a new instance of the Bear model
+        bear.name = req.body.name;  // set the bears name (comes from the request)
+
+        // save the bear and check for errors
+        bear.save(function(err) {
+            if (err)
+                res.send(err);
+
+            res.json({ message: 'Bear created!' });
+        });
     });
 	app.put('/api/bears', isLoggedIn, function(req, res) {
 				Bear.find(function(err, bears) {
