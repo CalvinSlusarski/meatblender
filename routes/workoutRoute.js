@@ -22,9 +22,9 @@ module.exports = function(app, isLoggedIn) {
     app.post('/api/workouts', isLoggedIn,
         // create a workout (accessed at POST http://localhost:8080/api/workouts)
         function(req, res) {
-            var workout = new Workout();      // create a new instance of the Workout model
-            workout.name = req.body.name;  // set the workouts name (comes from the request)
-
+            var workout = new Workout(req.body);      // create a new instance of the Workout model
+            //workout.name = req.body.name;  // set the workouts name (comes from the request)
+            //workout = req.body;
             // save the workout and check for errors
             workout.save(function(err) {
                 if (err)

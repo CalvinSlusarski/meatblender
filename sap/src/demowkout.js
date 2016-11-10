@@ -1,33 +1,35 @@
 import {EditData} from './edit-data';
 import {DialogService} from 'aurelia-dialog';
-import {dataWorkout} from 'data-workout';
+// import {dataServices} from 'data-services';
 
 export class DemoWkOut{
   static inject = [DialogService];
 
 
   heading = 'Workout';
-  theList = [{lift: 'Back squat', details:[{weight: 'BAR', unit: 'imperial',sets: 3, reps: 10},{weight: '135', unit: 'imperial',sets: 2, reps: 10},{weight: '155', unit: 'imperial',sets: 2, reps: 10}]},
+  theList = [{name: 'Back squat', series:[{weight: 'BAR', unit: 'imperial',sets: 3, reps: 10},{weight: '135', unit: 'imperial',sets: 2, reps: 10},{weight: '155', unit: 'imperial',sets: 2, reps: 10}]},
                 {lift: 'Hack squat', details:[{weight: 'BAR', unit: 'imperial',sets: 3, reps: 10},{weight: '135', unit: 'imperial',sets: 2, reps: 10}]}];
-  constructor(dialogService, dataWorkout) {
+  constructor(dialogService) {
     this.dialogService = dialogService;
-    this.dataWorkout = dataWorkout;
-    console.log('DO WORK');
-    console.log(this.dataWorkout.getWorkouts());
-    console.log(this.dataWorkout.getWorkouts);
-    this.dataWorkout.getWorkouts().then(data => {
-        console.log(data);
-    });
-
+    let that = this;
+    $.getJSON('api/workouts').then(function(d){ 
+      console.log(d);
+      console.log(d);
+      console.log(d[5].exercises);
+      console.log(that.theList);
+      that.heading = d.name || '';
+      that.theList = d[5].exercises || [];
+     });
   }
 
   addRep = function(item){
       let newRep = {weight: 'BAR', unit: 'imperial',sets: 3, reps: 10};
-      item.details.push(newRep);
+      item.series.push(newRep);
   }
 
   addExercise = function(){
-    let newExercise = {lift: 'Back squat', details:[]}
+    let newExercise = {name: 'Back squat', series:[]}
+    console.log(this.theList);
     this.theList.push(newExercise);
   }
   removeExercise = function(item,detail){
