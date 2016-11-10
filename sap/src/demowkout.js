@@ -1,5 +1,6 @@
 import {EditData} from './edit-data';
 import {DialogService} from 'aurelia-dialog';
+import {dataWorkout} from 'data-workout';
 
 export class DemoWkOut{
   static inject = [DialogService];
@@ -8,8 +9,16 @@ export class DemoWkOut{
   heading = 'Workout';
   theList = [{lift: 'Back squat', details:[{weight: 'BAR', unit: 'imperial',sets: 3, reps: 10},{weight: '135', unit: 'imperial',sets: 2, reps: 10},{weight: '155', unit: 'imperial',sets: 2, reps: 10}]},
                 {lift: 'Hack squat', details:[{weight: 'BAR', unit: 'imperial',sets: 3, reps: 10},{weight: '135', unit: 'imperial',sets: 2, reps: 10}]}];
-  constructor(dialogService) {
+  constructor(dialogService, dataWorkout) {
     this.dialogService = dialogService;
+    this.dataWorkout = dataWorkout;
+    console.log('DO WORK');
+    console.log(this.dataWorkout.getWorkouts());
+    console.log(this.dataWorkout.getWorkouts);
+    this.dataWorkout.getWorkouts().then(data => {
+        console.log(data);
+    });
+
   }
 
   addRep = function(item){
